@@ -1,0 +1,46 @@
+body {
+    padding: 0px;
+    margin: 0px;
+    font-size: 12px !important;
+}
+.float-left {
+    float: left;
+}
+.float-right {
+    float: right;
+}
+.width250 {
+    width: 250px;
+}
+.width300 {
+    width: 300px;
+}
+.width350 {
+    width: 350px;
+}
+.menu {
+    margin: auto;
+    width: auto !important;
+    paddin: 5px;
+    color: #ffffff;
+    background: #000000;
+    clear: both;
+}
+.menu li {
+    float: left !important;
+    width: auto !important;
+    clear: none !important;
+    padding: 0 25px !important;
+}
+.menu li a {
+    color: #ffffff;
+    text-decoration: none;
+}
+.wrap {
+    padding: 25px;
+}
+.clear {
+    clear: both;
+    height: 10px;
+    display: block;
+}

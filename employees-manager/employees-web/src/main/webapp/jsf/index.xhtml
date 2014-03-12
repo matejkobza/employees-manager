@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="templates/template.xhtml">
+
+    <ui:define name="content">
+        <h1><h:outputText value="#{msgs['sk.mk.web.welcome']}"/></h1>
+
+        <p:dialog modal="true" id="dialogCreateEmployee" widgetVar="dlg" header="#{msgs['sk.mk.web.employee']}">
+            <h:form id="frmDlg">
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="false"/>
+                <p:outputPanel id="frmPanel">
+                    <p:messages/>
+                    <h:panelGrid columns="2">
+                        <p:outputLabel for="empName" value="#{msgs['sk.mk.web.employeeName']}"/>
+                        <p:inputText id="empName" value="#{employeeBean.employee.name}" styleClass="width250"/>
+                        <p:outputLabel for="empPosition" value="#{msgs['sk.mk.web.employeePosition']}"/>
+                        <p:inputText id="empPosition" value="#{employeeBean.employee.position}" styleClass="width250"/>
+                        <p:outputLabel for="empSupervisor" value="#{msgs['sk.mk.web.employeeSupervisor']}"/>
+                        <p:selectOneMenu id="empSupervisor" value="#{employeeBean.supervisorId}">
+                            <f:selectItem itemLabel="" itemValue=""/>
+                            <f:selectItems value="#{employeeBean.possibleSupervisors}" var="supervisorId"
+                                           itemLabel="#{supervisorId.name}"
+                                           itemValue="#{supervisorId.id}"/>
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+                    <p:commandButton onclick="PF('dlg').hide()" value="#{msgs['button.cancel']}"
+                                     styleClass="float-right" type="button"/>
+                    <p:commandButton actionListener="#{employeeBean.saveOrUpdate}" value="#{msgs['button.save']}"
+                                     oncomplete="PF('dlg').hide()" update=":frmTbl:tblEmployees"
+                                     styleClass="float-right"/>
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
+
+        <h:form id="frmTbl">
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="false"/>
+
+            <p:commandButton onclick="PF('dlg').show()" value="#{msgs['button.create']}"
+                             actionListener="#{employeeBean.reset}" update=":frmDlg:frmPanel"/>
+            <br class="clear"/><br/>
+            <p:dataTable value="#{employeeBean.employees}" var="employee" id="tblEmployees">
+                <p:column headerText="#{msgs['sk.mk.web.employeeName']}">
+                    <h:link outcome="/jsf/employeeDetail" value="#{employee.name}">
+                        <f:param name="id" value="${employee.id}"/>
+                    </h:link>
+                </p:column>
+                <p:column headerText="#{msgs['sk.mk.web.employeePosition']}">
+                    <h:outputText value="#{employee.position}"/>
+                </p:column>
+                <p:column headerText="#{msgs['sk.mk.web.action']}">
+                    <p:commandButton actionListener="#{employeeBean.delete(employee.id)}"
+                                     value="#{msgs['button.delete']}"
+                                     update=":frmTbl:tblEmployees"/>
+                    <p:commandButton actionListener="#{employeeBean.load(employee.id)}" value="#{msgs['button.edit']}"
+                                     oncomplete="PF('dlg').show()" update=":frmDlg:frmPanel"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
+</html>

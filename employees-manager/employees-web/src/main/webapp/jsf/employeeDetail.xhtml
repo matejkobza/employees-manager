@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="templates/template.xhtml">
+
+    <ui:define name="content">
+        <h1><h:outputText value="#{msgs['sk.mk.web.employeeDetail']}"/></h1>
+
+        <p:messages showDetail="true" autoUpdate="true"/>
+
+        <p:dialog modal="true" widgetVar="dlg" header="#{msgs['sk.mk.web.partner']}">
+            <h:form id="frmDialog">
+                <h:panelGrid columns="2" id="pnlFrm">
+                    <p:outputLabel for="name" value="#{msgs['sk.mk.web.partnerName']}"/>
+                    <p:inputText id="name" value="#{employeeDetailBean.partner.name}" styleClass="width250"/>
+
+                    <p:outputLabel for="email" value="#{msgs['sk.mk.web.partnerEmail']}"/>
+                    <p:inputText id="email" value="#{employeeDetailBean.partner.email}" styleClass="width250"/>
+
+                    <p:outputLabel for="phone" value="#{msgs['sk.mk.web.partnerPhone']}"/>
+                    <p:inputText id="phone" value="#{employeeDetailBean.partner.phone}" styleClass="width250"/>
+                </h:panelGrid>
+
+                <p:commandButton onclick="PF('dlg').hide()" value="#{msgs['button.cancel']}"
+                                 styleClass="float-right" type="button"/>
+                <p:commandButton actionListener="#{employeeDetailBean.saveOrUpdatePartner}"
+                                 value="#{msgs['button.save']}"
+                                 oncomplete="PF('dlg').hide()" update=":frmDetail:tblPartners"
+                                 styleClass="float-right"/>
+            </h:form>
+        </p:dialog>
+
+
+        <h:panelGrid columns="2">
+            <h:outputText value="#{msgs['sk.mk.web.employeeName']}:"/>
+            <h:outputText value="#{employeeDetailBean.employee.name}"/>
+
+            <h:outputText value="#{msgs['sk.mk.web.employeePosition']}:"/>
+            <h:outputText value="#{employeeDetailBean.employee.position}"/>
+
+            <h:outputText value="#{msgs['sk.mk.web.employeeSupervisor']}:"/>
+            <h:outputText value="#{employeeDetailBean.employee.supervisor.name}"/>
+        </h:panelGrid>
+
+        <br/><br/>
+
+        <h:outputText value="#{msgs['sk.mk.web.supervisionTree']}"/>
+        <p:tree value="#{employeeDetailBean.root}" var="employee" id="empTree">
+            <p:treeNode id="treeNode">
+                <h:outputText value="#{employee}"/>
+            </p:treeNode>
+        </p:tree>
+
+        <br/><br/>
+
+        <h:form id="frmDetail">
+            <p:commandButton onclick="PF('dlg').show()" value="#{msgs['button.create']}"
+                             actionListener="#{employeeDetailBean.resetForm}" update=":frmDialog:pnlFrm"/>
+            <br/><br/>
+            <p:dataTable value="#{employeeDetailBean.partners}" var="partner" id="tblPartners">
+                <p:column headerText="#{msgs['sk.mk.web.partnerName']}">
+                    <h:outputText value="#{partner.name}"/>
+                </p:column>
+                <p:column headerText="#{msgs['sk.mk.web.partnerEmail']}">
+                    <h:outputText value="#{partner.email}"/>
+                </p:column>
+                <p:column headerText="#{msgs['sk.mk.web.partnerPhone']}">
+                    <h:outputText value="#{partner.phone}"/>
+                </p:column>
+                <p:column headerText="#{msgs['sk.mk.web.action']}">
+                    <p:commandButton value="#{msgs['button.edit']}"
+                                     actionListener="#{employeeDetailBean.editPartner(partner.id)}"
+                                     update=":frmDialog:pnlFrm"
+                                     oncomplete="PF('dlg').show()"
+                                     styleClass="float-right"/>
+                    <p:commandButton value="#{msgs['button.delete']}"
+                                     actionListener="#{employeeDetailBean.deletePartner(partner.id)}"
+                                     update=":frmDetail:tblPartners"
+                                     styleClass="float-right"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
+</html>
