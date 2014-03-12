@@ -33,7 +33,7 @@ public class Partner implements Serializable {
     @Column(name = "PHONE")
     private String phone;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "ID_EMPLOYEE", nullable = false)
     private Employee contact;
 

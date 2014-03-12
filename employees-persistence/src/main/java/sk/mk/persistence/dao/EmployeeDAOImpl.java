@@ -2,6 +2,7 @@ package sk.mk.persistence.dao;
 
 import sk.mk.persistence.entity.Employee;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -44,8 +45,9 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     }
 
     @Override
-    public void delete(Long id) {
-        em.remove(em.find(Employee.class, id));
+    public void delete(Employee e) {
+        em.createQuery("DELETE Partner p WHERE p.contact=:contact").setParameter("contact", e).executeUpdate();
+        em.remove(e);
     }
 
     @Override

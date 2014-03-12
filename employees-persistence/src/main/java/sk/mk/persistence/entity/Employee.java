@@ -32,7 +32,7 @@ public class Employee implements Serializable {
     @Size(min = 2, max = 80)
     private String position;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "ID_EMPLOYEE") // without this it will create another table
     // http://docs.jboss.org/hibernate/core/3.6/reference/en-US/html_single/#collections-mapping
     private Set<Partner> partners;

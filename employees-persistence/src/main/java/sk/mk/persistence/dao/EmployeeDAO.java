@@ -20,7 +20,7 @@ public interface EmployeeDAO {
 
     public Employee find(Long id);
 
-    public void delete(Long id);
+    public void delete(Employee e);
 
     public List<Employee> findSubordinates(Long id);
 

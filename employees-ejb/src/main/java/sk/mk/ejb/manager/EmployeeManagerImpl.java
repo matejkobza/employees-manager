@@ -46,7 +46,8 @@ public class EmployeeManagerImpl implements EmployeeManager {
 
     @Override
     public void delete(Long id) {
-        this.employeeDAO.delete(id);
+        Employee e = this.employeeDAO.find(id);
+        this.employeeDAO.delete(e);
     }
 
     @Override
